@@ -6,7 +6,7 @@ An open-source, scroll-driven WebGL experience about the deep-time history of a 
 
 ## Live
 
-Add your deployed URL here after the first deploy.
+Live at **https://www.prodiam.co.za/oldest/**
 
 ## Run locally
 
