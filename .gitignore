@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.vite/
+*.log
+.DS_Store
+.env
+.env.local
+
+# internal strategy docs, kept local, not for the public repo
+CREATIVE-BRIEF.md
+TREATMENT.md
+SCRIPT.md
+
+# temporary asset-verification frames
+public/**/_*

@@ -1,0 +1,4 @@
+# The Oldest Thing You'll Ever Own, by ProDiam (https://prodiam.co.za)
+# Crawl freely.
+User-agent: *
+Allow: /

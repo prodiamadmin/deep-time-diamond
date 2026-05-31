@@ -1,0 +1,28 @@
+{
+  "name": "aeon-deep-time",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Prodiam. The Oldest Thing You'll Ever Own: a scroll-driven WebGL deep-time journey of a diamond, by Prodiam.",
+  "license": "MIT",
+  "author": "ProDiam (https://prodiam.co.za)",
+  "homepage": "https://prodiam.co.za",
+  "keywords": ["three.js", "webgl", "gsap", "scrollytelling", "diamond", "interactive", "deep-time"],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "howler": "^2.2.4",
+    "lenis": "^1.3.0",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@types/howler": "^2.2.0",
+    "@types/three": "^0.184.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  }
+}

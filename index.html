@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#05060A" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="ProDiam" />
+    <link rel="author" href="https://prodiam.co.za" />
+    <link rel="canonical" href="https://www.prodiam.co.za/oldest/" />
+    <title>The Oldest Thing You'll Ever Own</title>
+    <meta name="description" content="A diamond is the oldest thing you will ever own. Up to three billion years old. Scroll back through deep time to the moment it formed, 150km inside the Earth, then watch it become a ring. An interactive by ProDiam." />
+
+    <!-- favicon: a simple diamond -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M6 12 L16 4 L26 12 L16 28 Z' fill='%230b0d14' stroke='%23EAF2FF' stroke-width='1.6'/%3E%3C/svg%3E" />
+
+    <!-- Open Graph / Twitter: makes shares look great (the link-magnet) -->
+    <meta property="og:title" content="The Oldest Thing You'll Ever Own" />
+    <meta property="og:description" content="Older than the pyramids. Older than dinosaurs. Older than the air you breathe. Scroll through a diamond's three-billion-year life." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ProDiam" />
+    <meta property="og:url" content="https://www.prodiam.co.za/oldest/" />
+    <meta property="og:image" content="https://www.prodiam.co.za/oldest/img/scene-2-mantle.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The Oldest Thing You'll Ever Own" />
+    <meta name="twitter:description" content="A diamond's three-billion-year journey, from 150km underground to your hand. An interactive by ProDiam." />
+    <meta name="twitter:image" content="https://www.prodiam.co.za/oldest/img/scene-2-mantle.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      "name": "The Oldest Thing You'll Ever Own",
+      "headline": "A diamond's three-billion-year deep-time journey",
+      "description": "An interactive web experience tracing a natural diamond from its formation 150km inside the Earth, up to three billion years ago, to a finished ring cut in Bedfordview, South Africa.",
+      "about": ["diamonds", "deep time", "geology", "South Africa"],
+      "creator": { "@type": "Organization", "name": "ProDiam", "url": "https://prodiam.co.za" },
+      "publisher": { "@type": "Organization", "name": "ProDiam", "url": "https://prodiam.co.za" },
+      "license": "https://opensource.org/licenses/MIT"
+    }
+    </script>
+
+    <style>
+      :root {
+        --void: #05060A;
+        --ice: #EAF2FF;
+        --amber: #FF7A1A;
+        --garnet: #3A0E0E;
+        --display: 'Fraunces', Georgia, serif;
+        --body: 'Inter', system-ui, sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { background: var(--void); color: var(--ice); overscroll-behavior: none; }
+      body { font-family: var(--body); -webkit-font-smoothing: antialiased; }
+
+      /* Fixed WebGL canvas (never re-mounts); scroll only drives it */
+      #gl { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; display: block; }
+
+      /* Kinetic typography overlay, fixed above the canvas */
+      #overlay { position: fixed; inset: 0; z-index: 20; pointer-events: none; }
+
+      /* The tall scroll spacer that ScrollTrigger pins against (height set in JS per beats) */
+      #scroll { position: relative; z-index: 10; width: 100%; }
+
+      /* Branded preloader, keeps first paint pure void */
+      #preloader {
+        position: fixed; inset: 0; z-index: 100; background: var(--void);
+        display: flex; align-items: center; justify-content: center; flex-direction: column;
+        gap: 1.5rem; transition: opacity 1.2s ease; color: var(--ice);
+      }
+      #preloader.done { opacity: 0; pointer-events: none; }
+      #preloader .mark { font-family: var(--display); font-size: clamp(2rem, 6vw, 4rem); font-weight: 300; letter-spacing: 0.3em; }
+      #preloader .bar { width: min(220px, 50vw); height: 1px; background: rgba(234,242,255,0.15); position: relative; overflow: hidden; }
+      #preloader .bar > i { position: absolute; inset: 0; width: 0%; background: var(--amber); transition: width 0.4s ease; }
+
+      /* Audio toggle (off by default) */
+      #audio { position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 40; pointer-events: auto;
+        background: transparent; border: 1px solid rgba(234,242,255,0.2); color: var(--ice);
+        font-family: var(--body); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+        padding: 0.5rem 0.8rem; border-radius: 2rem; cursor: pointer; opacity: 0.6; transition: opacity .3s; }
+      #audio:hover { opacity: 1; }
+
+      /* Scroll hint */
+      #hint { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); z-index: 30;
+        font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.5;
+        animation: pulse 2.4s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { opacity: 0.25; } 50% { opacity: 0.6; } }
+
+      @media (prefers-reduced-motion: reduce) { #hint { animation: none; } }
+      noscript .fallback { position: fixed; inset: 0; display: grid; place-items: center; padding: 2rem; text-align: center; font-family: var(--display); gap: 1rem; }
+      noscript a { color: var(--amber); }
+    </style>
+  </head>
+  <body>
+    <canvas id="gl"></canvas>
+    <div id="overlay"></div>
+    <div id="scroll"></div>
+
+    <button id="audio" aria-label="Toggle sound">Sound&nbsp;Off</button>
+    <div id="hint">Scroll</div>
+
+    <div id="preloader">
+      <div class="mark">PRODIAM</div>
+      <div class="bar"><i></i></div>
+    </div>
+
+    <noscript>
+      <div class="fallback">
+        <p>A diamond is up to three billion years old. The oldest thing you will ever own.</p>
+        <p>This interactive needs JavaScript. Explore diamonds at <a href="https://prodiam.co.za">prodiam.co.za</a>.</p>
+      </div>
+    </noscript>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

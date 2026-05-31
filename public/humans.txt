@@ -1,0 +1,11 @@
+/* TEAM */
+  Crafted by: ProDiam (Prodiam Trading CC)
+  Site: https://prodiam.co.za
+  Location: Bedfordview, South Africa
+  What: a natural-diamond cutting house. Rough to ring, under one roof.
+
+/* THIS INTERACTIVE */
+  Title: The Oldest Thing You'll Ever Own
+  About: a scroll-driven WebGL journey through a diamond's three-billion-year deep-time history.
+  Tech: Three.js, GSAP ScrollTrigger, Lenis, Howler, Vite, TypeScript.
+  License: MIT. Reuse freely; a link back to https://prodiam.co.za is appreciated.
